@@ -62,8 +62,8 @@ urls = {
     'Audio y Video': 'https://dazimportadora.com.ar/categoria-producto/audio-y-video/'
 }
 
-st.title("Aicito- STORE")
-st.header("25 De Mayo 1360")
+st.title("Aicito STORE - 25 de mayo 1360")
+
 st.sidebar.image(nueva_imagen)
 # Crear los tabs
 selected_tab = st.sidebar.radio("Selecciona una categoría:", list(urls.keys()))
