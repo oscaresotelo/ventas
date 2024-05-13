@@ -1,0 +1,33 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.box-text {
+    border: 2px solid #ccc;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.product-title {
+    font-size: larger;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.price {
+    font-size: larger;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.column {
+    float: left;
+    width: 50%;
+    padding: 10px;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
