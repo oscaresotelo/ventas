@@ -8,7 +8,7 @@ nueva_imagen = image.resize((200, 200))
 st.set_page_config(
     page_title="Ventas - Aicito",
     page_icon="🧊",
-    layout="wide",
+    
     initial_sidebar_state="expanded")
 
 hide_st_style = """
