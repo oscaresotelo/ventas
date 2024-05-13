@@ -5,6 +5,26 @@ from PIL import Image
 
 image = Image.open("nino.jpg")
 nueva_imagen = image.resize((200, 200))
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+                     .container {
+                display: flex;
+            }
+            .logo-text {
+                font-weight:700 !important;
+                font-size:30px !important;
+                color: black !important;
+                padding-top: 50px !important;
+            }
+            .logo-img {
+                float:right;
+            }
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 def local_css(file_name):
     with open(file_name) as f:
