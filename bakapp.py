@@ -63,7 +63,7 @@ urls = {
 }
 
 st.title("Aicito- STORE")
-st.title("25 De Mayo 1360")
+st.header("25 De Mayo 1360")
 st.sidebar.image(nueva_imagen)
 # Crear los tabs
 selected_tab = st.sidebar.radio("Selecciona una categoría:", list(urls.keys()))
