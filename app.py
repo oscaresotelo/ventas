@@ -6,7 +6,7 @@ from PIL import Image
 
 # Función para cargar imágenes y asociarlas a productos
 def upload_images(product_name):
-    uploaded_files = st.file_uploader(f"Subir imagen para {product_name}", accept_multiple_files=True)
+    uploaded_files = st.file_uploader(f"Subir imagen para {product_name}", key=f"upload_{product_name}", accept_multiple_files=True)
     if uploaded_files:
         for uploaded_file in uploaded_files:
             st.image(uploaded_file, caption=f"Imagen asociada a {product_name}", use_column_width=True)
