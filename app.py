@@ -1,47 +1,138 @@
-import csv
-import asyncio
+import os
+import streamlit as st
+import requests
+from bs4 import BeautifulSoup
+from PIL import Image
 
-from duckduckgo_search import AsyncDDGS
+# Función para cargar imágenes y asociarlas a productos
+def upload_images(product_name):
+    uploaded_files = st.file_uploader(f"Subir imagen para {product_name}", accept_multiple_files=True)
+    if uploaded_files:
+        for uploaded_file in uploaded_files:
+            st.image(uploaded_file, caption=f"Imagen asociada a {product_name}", use_column_width=True)
+            # Guardar la imagen con el nombre del producto en la carpeta 'images'
+            save_image(uploaded_file, product_name)
 
+def save_image(image_file, product_name):
+    # Crear la carpeta 'images' si no existe
+    if not os.path.exists('images'):
+        os.makedirs('images')
+    # Obtener la extensión del archivo
+    ext = image_file.name.split('.')[-1]
+    # Guardar la imagen con el nombre del producto en la carpeta 'images'
+    image_path = os.path.join('images', f'{product_name}.{ext}')
+    with open(image_path, 'wb') as f:
+        f.write(image_file.read())  # Cambiado de getbuffer() a read()
+    st.success(f"Imagen guardada como '{product_name}.{ext}'")
 
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+image = Image.open("nino.jpg")
+nueva_imagen = image.resize((200, 200))
+st.set_page_config(
+    page_title="Ventas - Aicito",
+    page_icon="🧊",
+    initial_sidebar_state="expanded")
+
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+                     .container {
+                display: flex;
+            }
+            .logo-text {
+                font-weight:700 !important;
+                font-size:30px !important;
+                color: black !important;
+                padding-top: 50px !important;
+            }
+            .logo-img {
+                float:right;
+            }
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+local_css("estilos.css")
+
+def clean_product_name(product_name):
+    # Eliminar el carácter " (comillas dobles), ″ (comillas dobles prime), y / (slash)
+    # si están presentes en el nombre del producto, pero no eliminarlos si están de forma aislada
+    product_words = product_name.split()
+    cleaned_words = []
+    for word in product_words:
+        if ('"' in word or '″' in word or '/' in word) and len(word) > 1:
+            word = word.replace('"', '').replace('″', '').replace('/', '')
+        cleaned_words.append(word)
+    return ' '.join(cleaned_words)
+
+def scrape_website(url):
+    # Obtener el contenido HTML de la página
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    # Encontrar todos los elementos con la clase 'box-text'
+    items = soup.find_all(class_='box-text')
+
+    # Dividir la pantalla en dos columnas
+    col1, col2 = st.columns(2)
+
+    # Mostrar los datos de cada producto en las columnas
+    for idx, item in enumerate(items, start=1):
+        category = item.find(class_='category').text.strip()
+        product_name = item.find(class_='product-title').text.strip()
+        price_imported = float(item.find(class_='price').text.strip().replace('$', '').replace(',', ''))
+
+        # Calcular el precio final con un aumento del 40%
+        price_final = price_imported * 1.4
+
+        # Limpiar el nombre del producto si contiene los caracteres " (comillas dobles), ″ (comillas dobles prime), o / (slash)
+        product_name = clean_product_name(product_name)
+
+        # Distribuir los productos en las columnas de forma intercalada
+        if idx % 2 == 0:
+            with col2:
+                st.markdown(
+                    f'<div class="product-box">'
+                    f'<div style="font-size: larger; font-weight: bold;">Producto:</div>'
+                    f'<div style="margin-left: 20px;">{product_name}</div>'
+                    f'<div style="font-size: larger; font-weight: bold;">Precio:</div>'
+                    f'<div style="margin-left: 20px;">${price_final:.2f}</div>'
+                    f'</div>',
+                    unsafe_allow_html=True
+                )
+                upload_images(product_name)
+        else:
+            with col1:
+                st.markdown(
+                    f'<div class="product-box">'
+                    f'<div style="font-size: larger; font-weight: bold;">Producto:</div>'
+                    f'<div style="margin-left: 20px;">{product_name}</div>'
+                    f'<div style="font-size: larger; font-weight: bold;">Precio:</div>'
+                    f'<div style="margin-left: 20px;">${price_final:.2f}</div>'
+                    f'</div>',
+                    unsafe_allow_html=True
+                )
+                upload_images(product_name)
+
+# Definir las URLs
+urls = {
+    'Accesorios': 'https://dazimportadora.com.ar/categoria-producto/accesorios/',
+    'Audio y Video': 'https://dazimportadora.com.ar/categoria-producto/audio-y-video/'
 }
 
-async def aget_results(query):
-    search = AsyncDDGS(headers=headers, proxies=None)
-    results = await search.text(query, max_results=100)
-    return results
+st.title("25 STORE- 25 DE MAYO 1360")
 
-async def aget_multiple_results(query_list):
-    tasks = [aget_results(query) for query in query_list]
-    results = await asyncio.gather(*tasks)
-    results_all = []
-    for result in results:
-        results_all.extend(result)
-    return results_all
+st.sidebar.image(nueva_imagen)
+# Crear los tabs
+selected_tab = st.sidebar.radio("Selecciona una categoría:", list(urls.keys()))
 
-if __name__ == '__main__':
-    queries = [
-        "retail shop in England that sells Marine fish",
-        "retail shop in England that sells Invertebrates",
-        "retail shop in England that sells Corals",
-        "retail shop in England that sells Ornamental Fresh",
-        "retail shop in England that sells Coldwater fish"
-    ]
-    data = asyncio.run(aget_multiple_results(queries))
+# Obtener la URL seleccionada
+selected_url = urls[selected_tab]
 
-    # Specify the CSV file name
-    csv_file_name = 'business_info.csv'
-
-    # Open the file in write mode
-    with open(csv_file_name, mode='w', newline='', encoding='utf-8') as file:
-        # Create a DictWriter object
-        writer = csv.DictWriter(file, fieldnames=data[0].keys())
-        
-        # Write the header row
-        writer.writeheader()
-        
-        # Write the data rows
-        for row in data:
-            writer.writerow(row)  
+# Scraping y mostrar resultados
+scrape_website(selected_url)

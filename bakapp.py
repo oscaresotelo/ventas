@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 from bs4 import BeautifulSoup
+import os  # Importar el módulo os para manejar archivos y carpetas
 from PIL import Image
 
 image = Image.open("nino.jpg")
@@ -52,11 +53,21 @@ def scrape_website(url):
     # Mostrar los datos de cada producto en las columnas
     for idx, item in enumerate(items, start=1):
         category = item.find(class_='category').text.strip()
-        product_name = item.find(class_='product-title').text.strip()
+        # Obtener el nombre del producto y reemplazar caracteres no deseados
+        product_name = item.find(class_='product-title').text.strip().replace('″', '').replace('/', '')
         price_imported = float(item.find(class_='price').text.strip().replace('$', '').replace(',', ''))
 
         # Calcular el precio final con un aumento del 40%
         price_final = price_imported * 1.4
+
+        # Obtener la ruta de la imagen del producto
+        image_path = os.path.join('images', f'{product_name}.png')  # Cambiar extensión a '.png'
+        
+        # Verificar si la imagen existe en la carpeta 'images'
+        if os.path.exists(image_path):
+            product_image = Image.open(image_path)
+        else:
+            product_image = None  # Establecer product_image como None si no hay imagen
 
         # Distribuir los productos en las columnas de forma intercalada
         if idx % 2 == 0:
@@ -70,6 +81,11 @@ def scrape_website(url):
                     f'</div>',
                     unsafe_allow_html=True
                 )
+                if product_image:
+                    st.image(product_image, caption=f'Imagen de {product_name}', width=200)
+                else:
+                    st.write("No existe imagen disponible")
+
         else:
             with col1:
                 st.markdown(
@@ -81,6 +97,10 @@ def scrape_website(url):
                     f'</div>',
                     unsafe_allow_html=True
                 )
+                if product_image:
+                    st.image(product_image, caption=f'Imagen de {product_name}', width=200)
+                else:
+                    st.write("No existe imagen disponible")
 
 # Definir las URLs
 urls = {
@@ -88,12 +108,12 @@ urls = {
     'Audio y Video': 'https://dazimportadora.com.ar/categoria-producto/audio-y-video/'
 }
 
-st.title("Aicito STORE - 25 de mayo 1360")
+st.title("25 STORE - 25 de mayo 1360")
 
 st.sidebar.image(nueva_imagen)
 # Crear los tabs
 selected_tab = st.sidebar.radio("Selecciona una categoría:", list(urls.keys()))
-listita = st
+
 # Obtener la URL seleccionada
 selected_url = urls[selected_tab]
 
