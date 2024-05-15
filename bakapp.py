@@ -7,7 +7,7 @@ import math  # Importar la librería math para redondear hacia arriba
 
 st.set_page_config(
     page_title="Ventas - Aicito",
-    page_icon="🧊",
+    page_icon="🧊",)
     #initial_sidebar_state="expanded")
 st.title("25 STORE - 25 de mayo 1360")
 st.header("Consultas")
