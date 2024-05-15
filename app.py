@@ -4,28 +4,13 @@ from bs4 import BeautifulSoup
 import os  # Importar el módulo os para manejar archivos y carpetas
 from PIL import Image
 import math  # Importar la librería math para redondear hacia arriba
-import base64
-st.set_page_config(
-    page_title="Ventas - Aicito",
-    page_icon="🧊")
 
-st.markdown(
-    """
-    <style>
-    .reportview-container {
-        background: url("nino.jpg");
-    }
-   </style>
-    """,
-    unsafe_allow_html=True
-)
+st.set_page_config(
+    page_title="Ventas - 25 STORE",
+    page_icon="🧊",)
+
 st.markdown("<h1 style='text-align: center; color: black; margin-top: -20px; margin-bottom: -10px;'>25 Store</h1><p style='text-align: center; margin-top: -10px;'>25 de mayo 1360</p>", unsafe_allow_html=True)
 
-
-
-
-
-#st.markdown("<h1 style='text-align: center; color: black;'>25 de Mayo 1360</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: left; margin-top: -10px;'>Consultas</p>", unsafe_allow_html=True)
 whatsapp_icon = '''
 <a href="https://api.whatsapp.com/send?phone=5493814644703" target="_blank">
@@ -33,6 +18,8 @@ whatsapp_icon = '''
 </a>
 '''
 st.markdown(whatsapp_icon, unsafe_allow_html=True)
+st.markdown("<p style='text-align: left; margin-top: -10px;'>Entrega Zona Centrica sin Cargo</p>", unsafe_allow_html=True)
+
 image = Image.open("nino.jpg")
 nueva_imagen = image.resize((200, 200))
 
@@ -116,6 +103,9 @@ def scrape_website(url):
                     f'<div style="margin-left: 20px;">{product_name}</div>'
                     f'<div style="font-size: larger; font-weight: bold;">Precio:</div>'
                     f'<div style="margin-left: 20px;">${price_final:.2f}</div>'
+                    f'<a href="https://api.whatsapp.com/send?phone=5493814644703&text=Me%20interesa%20{product_name}" target="_blank">'
+                    f'<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="50">'
+                    f'</a>'
                     f'</div>',
                     unsafe_allow_html=True
                 )
@@ -132,6 +122,9 @@ def scrape_website(url):
                     f'<div style="margin-left: 20px;">{product_name}</div>'
                     f'<div style="font-size: larger; font-weight: bold;">Precio:</div>'
                     f'<div style="margin-left: 20px;">${price_final:.2f}</div>'
+                    f'<a href="https://api.whatsapp.com/send?phone=5493814644703&text=Me%20interesa%20{product_name}" target="_blank">'
+                    f'<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="50">'
+                    f'</a>'
                     f'</div>',
                     unsafe_allow_html=True
                 )
@@ -148,12 +141,8 @@ rutatecnologia =  'https://dazimportadora.com.ar/categoria-producto/tecnologia/'
 tab1, tab2, tab3 = st.tabs(["Audio y Video", "Accesorios", "Tecnologia"])
 
 with tab1:
-
     scrape_website(rutaaudiovido)
 with tab2:
-
     scrape_website(rutaaccesorios)
 with tab3:
-   
     scrape_website('https://dazimportadora.com.ar/categoria-producto/tecnologia/')
-
