@@ -3,14 +3,32 @@ import requests
 from bs4 import BeautifulSoup
 import os  # Importar el módulo os para manejar archivos y carpetas
 from PIL import Image
+import math  # Importar la librería math para redondear hacia arriba
 
-image = Image.open("nino.jpg")
-nueva_imagen = image.resize((200, 200))
 st.set_page_config(
     page_title="Ventas - Aicito",
     page_icon="🧊",
-    
     initial_sidebar_state="expanded")
+st.title("25 STORE - 25 de mayo 1360")
+st.header("Consultas")
+whatsapp_icon = '''
+<a href="https://api.whatsapp.com/send?phone=5493814644703" target="_blank">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="80">
+</a>
+'''
+st.markdown(whatsapp_icon, unsafe_allow_html=True)
+image = Image.open("nino.jpg")
+nueva_imagen = image.resize((200, 200))
+
+css = '''
+<style>
+    .stTabs [data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {
+    font-size:2rem;
+    }
+</style>
+'''
+
+st.markdown(css, unsafe_allow_html=True)
 
 hide_st_style = """
             <style>
@@ -32,6 +50,7 @@ hide_st_style = """
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
+
 
 def local_css(file_name):
     with open(file_name) as f:
@@ -59,6 +78,9 @@ def scrape_website(url):
 
         # Calcular el precio final con un aumento del 40%
         price_final = price_imported * 1.4
+
+        # Redondear el precio final hacia arriba y ajustar la decena y la unidad a cero
+        price_final = math.ceil(price_final / 100) * 100  # Redondear hacia arriba y ajustar a múltiplo de 100
 
         # Obtener la ruta de la imagen del producto
         image_path = os.path.join('images', f'{product_name}.png')  # Cambiar extensión a '.png'
@@ -103,19 +125,19 @@ def scrape_website(url):
                     st.write("No existe imagen disponible")
 
 # Definir las URLs
-urls = {
-    'Accesorios': 'https://dazimportadora.com.ar/categoria-producto/accesorios/',
-    'Audio y Video': 'https://dazimportadora.com.ar/categoria-producto/audio-y-video/'
-}
 
-st.title("25 STORE - 25 de mayo 1360")
+rutaaccesorios = 'https://dazimportadora.com.ar/categoria-producto/accesorios/'
+rutaaudiovido = 'https://dazimportadora.com.ar/categoria-producto/audio-y-video/'
+rutatecnologia =  'https://dazimportadora.com.ar/categoria-producto/tecnologia/'
+tab1, tab2, tab3 = st.tabs(["Audio y Video", "Accesorios", "Tecnologia"])
 
-st.sidebar.image(nueva_imagen)
-# Crear los tabs
-selected_tab = st.sidebar.radio("Selecciona una categoría:", list(urls.keys()))
+with tab1:
 
-# Obtener la URL seleccionada
-selected_url = urls[selected_tab]
+    scrape_website(rutaaudiovido)
+with tab2:
 
-# Scraping y mostrar resultados
-scrape_website(selected_url)
+    scrape_website(rutaaccesorios)
+with tab3:
+   
+    scrape_website('https://dazimportadora.com.ar/categoria-producto/tecnologia/')
+
