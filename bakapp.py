@@ -19,7 +19,7 @@ whatsapp_icon = '''
 </a>
 '''
 st.markdown(whatsapp_icon, unsafe_allow_html=True)
-st.markdown("<p style='text-align: left; margin-top: -10px;'>Entrega Zona Centrica</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: left; margin-top: -10px;'>Entrega Zona Centrica sin Cargo</p>", unsafe_allow_html=True)
 
 image = Image.open("nino.jpg")
 nueva_imagen = image.resize((200, 200))
