@@ -7,10 +7,15 @@ import math  # Importar la librería math para redondear hacia arriba
 
 st.set_page_config(
     page_title="Ventas - Aicito",
-    page_icon="🧊",
-    initial_sidebar_state="expanded")
-st.title("25 STORE - 25 de mayo 1360")
-st.header("Consultas")
+    page_icon="🧊")
+#st.markdown("<h1 style='text-align: center; color: black;'>25 STORE</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: black; margin-bottom: -10px;'>25 STORE</h1><p style='text-align: center; margin-top: -10px;'>25 de mayo 1360</p>", unsafe_allow_html=True)
+
+
+
+
+#st.markdown("<h1 style='text-align: center; color: black;'>25 de Mayo 1360</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: left; margin-top: -10px;'>Consultas</p>", unsafe_allow_html=True)
 whatsapp_icon = '''
 <a href="https://api.whatsapp.com/send?phone=5493814644703" target="_blank">
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="80">
