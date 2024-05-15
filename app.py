@@ -9,7 +9,8 @@ st.set_page_config(
     page_title="Ventas - Aicito",
     page_icon="🧊")
 #st.markdown("<h1 style='text-align: center; color: black;'>25 STORE</h1>", unsafe_allow_html=True)
-st.markdown("<h1 style='text-align: center; color: black; margin-bottom: -10px;'>25 STORE</h1><p style='text-align: center; margin-top: -10px;'>25 de mayo 1360</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: black; margin-top: -20px; margin-bottom: -10px;'>25 Store</h1><p style='text-align: center; margin-top: -10px;'>25 de mayo 1360</p>", unsafe_allow_html=True)
+
 
 
 
