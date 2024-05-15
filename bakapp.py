@@ -6,7 +6,7 @@ from PIL import Image
 import math  # Importar la librería math para redondear hacia arriba
 
 st.set_page_config(
-    page_title="Ventas - Aicito",
+    page_title="Ventas - 25 STORE",
     page_icon="🧊",)
     #initial_sidebar_state="expanded")
 #st.markdown("<h1 style='text-align: center; color: black; margin-bottom: -10px;'>25 STORE</h1><p style='text-align: center; margin-top: -10px;'>25 de mayo 1360</p>", unsafe_allow_html=True)
