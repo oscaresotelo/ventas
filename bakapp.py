@@ -138,7 +138,8 @@ def scrape_website(url):
 rutaaccesorios = 'https://dazimportadora.com.ar/categoria-producto/accesorios/'
 rutaaudiovido = 'https://dazimportadora.com.ar/categoria-producto/audio-y-video/'
 rutatecnologia =  'https://dazimportadora.com.ar/categoria-producto/tecnologia/'
-tab1, tab2, tab3 = st.tabs(["Audio y Video", "Accesorios", "Tecnologia"])
+rutahogar= 'https://dazimportadora.com.ar/categoria-producto/hogar/'
+tab1, tab2, tab3 , tab4 = st.tabs(["Audio y Video", "Accesorios", "Tecnologia", "Electrodomesticos"])
 
 with tab1:
     scrape_website(rutaaudiovido)
@@ -146,3 +147,5 @@ with tab2:
     scrape_website(rutaaccesorios)
 with tab3:
     scrape_website('https://dazimportadora.com.ar/categoria-producto/tecnologia/')
+with tab4:
+    scrape_website(rutahogar)
